@@ -1,0 +1,23 @@
+{
+  "name": "functions-collection",
+  "version": "1.0.0",
+  "description": "Reusable JS functions",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AndrewSotnikow/functions-collection.git"
+  },
+  "keywords": [
+    "JavaScript",
+    "TypeScript"
+  ],
+  "author": "Andrii Sotnikov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AndrewSotnikow/functions-collection/issues"
+  },
+  "homepage": "https://github.com/AndrewSotnikow/functions-collection#readme"
+}
