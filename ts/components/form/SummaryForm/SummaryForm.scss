@@ -1,0 +1,228 @@
+/* ==========================================================================
+	Summary From
+	========================================================================== */
+
+@use '../../../../css/base/' as *;
+@use '../Input/Input' as *;
+
+/*========================================================================== */
+
+.c-summaryForm {
+    .c-invoice {
+        &_text {
+            margin-left: 16px;
+            cursor: pointer;
+        }
+        .c-toggle {
+            &.-opened {
+                border-top: 1px solid $color_stroke;
+            }
+        }
+
+        &_title {
+            border-bottom: 1px solid $color_stroke;
+        }
+    }
+
+    .c-form {
+        width: 100%;
+
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus,
+        input:-webkit-autofill:active {
+            box-shadow: 0 0 0 30px $color_white inset !important;
+            -webkit-box-shadow: 0 0 0 30px $color_white inset !important;
+        }
+
+        &_row {
+            max-width: 448px;
+
+            @include respond-below(md) {
+                max-width: 100%;
+            }
+            &.-address {
+                @include respond-below(lg) {
+                    max-width: 330px;
+                }
+            }
+        }
+        textarea {
+            width: 100%;
+            max-width: 448px;
+            min-height: 58px;
+            overflow: hidden;
+            resize: none;
+            @include respond-below(md) {
+                max-width: 100%;
+            }
+        }
+        &_field {
+            &.-tel {
+                padding: 15px 24px;
+            }
+            &.-initialTextareaHeight {
+                max-height: 58px !important;
+            }
+        }
+        &_group {
+            &.-postalCode {
+                max-width: 151px;
+                @include respond-below(md) {
+                    max-width: 100%;
+                }
+                input {
+                    min-width: 151px;
+                }
+            }
+            &.-city {
+                @include respond-below(lg) {
+                    min-width: 151px;
+                }
+                input {
+                    @include respond-below(lg) {
+                        min-width: 151px;
+                    }
+                }
+            }
+            &.-nip {
+                -moz-appearance: textfield;
+                input::-webkit-outer-spin-button,
+                input::-webkit-inner-spin-button {
+                    -webkit-appearance: none;
+                    margin: 0;
+                }
+            }
+        }
+
+        &_statute {
+            flex-shrink: 0;
+            width: fit-content;
+        }
+
+        .c-quote {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-end;
+            justify-content: space-between;
+            min-width: 194px;
+            &_text {
+                max-width: 527px;
+                margin-bottom: 0;
+                background: $color_grey;
+                border: 1px solid $color_stroke;
+
+                &::after {
+                    right: -8px;
+                    bottom: 10px;
+                    background: $color_grey;
+                    border-top: 0;
+                    border-right: 1px solid $color_stroke;
+                    border-bottom: 1px solid $color_stroke;
+                    border-left: 0;
+                }
+            }
+
+            &_author {
+                flex-direction: row-reverse;
+                @include respond-below(sm) {
+                    width: 120px;
+                }
+            }
+
+            &_name {
+                text-align: left;
+            }
+        }
+
+        .form-control {
+            width: fit-content;
+            height: fit-content;
+
+            @include respond-below(xxs) {
+                width: 170px;
+            }
+        }
+
+        .dropDown {
+            background-color: transparent;
+            border: 0;
+            .flag {
+                margin-left: -5px;
+                transform: scale(1.25);
+            }
+            .arrow {
+                margin-top: -3px;
+                margin-left: 8px;
+                border-top: 6px solid $color_cinder;
+                border-right: 5px solid transparent;
+                border-left: 5px solid transparent;
+            }
+        }
+
+        .inputClass {
+            padding-left: 15px;
+            margin-left: 71px;
+            border: 0;
+            border-left: 1px solid $color_input;
+            border-radius: 0;
+        }
+
+        .country-list {
+            top: 50px;
+        }
+
+        .c-icon {
+            margin-left: 10px;
+        }
+    }
+
+    .c-hoursSelection {
+        .c-radioGroup {
+            flex-wrap: nowrap;
+            justify-content: space-between;
+            margin: 0;
+            .f-label {
+                margin: 0;
+                &:nth-child(2) {
+                    margin: 0 8px;
+                    @include respond-below(sm) {
+                        margin: 8px 0;
+                    }
+                }
+                label {
+                    min-width: 144px;
+                    text-align: center;
+                }
+            }
+        }
+    }
+    .c-mobileSummaryButton {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        padding: 16px 16px 8px;
+        border: 1px solid $color_stroke;
+    }
+    .c-link {
+        @include respond-above(md) {
+            border-bottom: 1px solid $color_cinder;
+            padding-bottom: 1px;
+        }
+    }
+    .c-label {
+        @include respond-above(md) {
+            letter-spacing: -0.01em;
+            word-spacing: -1px;
+        }
+    }
+
+    .c-stepContainer {
+        &:last-child {
+            @include respond-below(md) {
+                margin-bottom: 170px;
+            }
+        }
+    }
+}

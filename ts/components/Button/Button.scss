@@ -1,0 +1,265 @@
+/* ==========================================================================
+	Buttons
+	========================================================================== */
+
+@use '../../../../css/base' as *;
+
+a,
+button {
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+button {
+    background-color: transparent;
+    border: 0;
+
+    &:focus {
+        outline: 0;
+    }
+}
+
+/*========================================================================== */
+
+.c-btn {
+    @include typo_aeonik_14-16;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 56px;
+    padding: 20px 32px;
+    text-align: center;
+    letter-spacing: 0.03em;
+    user-select: none;
+    border: 1px solid;
+    border-radius: 30px;
+    transition: background-color 0.25s, border-color 0.25s, color 0.25s;
+
+    [class^='icon-'] {
+        display: inline-block;
+        font-size: 24px;
+    }
+
+    &:not(.-cart) {
+        [class^='icon-'] {
+            margin-left: 8px;
+        }
+
+        .icon-arrow {
+            transition: transform 200ms;
+        }
+
+        &:hover {
+            @include respond-above(md) {
+                .icon-arrow {
+                    transform: translate3d(5px, 0, 0);
+                }
+            }
+        }
+    }
+    &.-primary {
+        color: $color_white;
+        background-color: $color_pumpkin;
+        border-color: $color_pumpkin;
+
+        &:hover {
+            @include respond-above(md) {
+                background-color: $color_pumpkin_dark;
+                border-color: $color_pumpkin_dark;
+            }
+        }
+
+        &.-alt {
+            background-color: $color_cinder;
+        }
+    }
+    &.-primary2,
+    &.-add3 {
+        color: $color_white;
+        background-color: $color_cinder;
+        border-color: $color_cinder;
+
+        &:hover {
+            @include respond-above(md) {
+                background-color: $color_black-2;
+                border-color: $color_black-2;
+            }
+        }
+    }
+    &.-add3 {
+        [class^='icon-'] {
+            margin-right: 10px;
+            margin-left: 0;
+            font-size: 16px;
+        }
+    }
+    &.-secondary {
+        color: $color_cinder;
+        background-color: $color_white;
+        border-color: $color_stroke;
+
+        &:hover {
+            border-color: $color_cinder;
+        }
+    }
+    &.-borderLess {
+        position: relative;
+        padding: 0;
+        color: $color_cinder;
+        background-color: transparent;
+        border: 0;
+    }
+    &.-disabled {
+        color: $color_disabled;
+        pointer-events: none;
+        cursor: default;
+        background-color: $color_grey;
+        border: 1px solid $color_stroke;
+    }
+    &.-loading {
+        .icon-loading {
+            transform-origin: center;
+            animation: loading 1.5s infinite linear;
+        }
+    }
+    &.-add {
+        border: 1px solid $color_stroke;
+
+        [class^='icon-'] {
+            margin-right: 10px;
+            margin-left: 0;
+            font-size: 16px;
+        }
+
+        &:hover {
+            @include respond-above(md) {
+                color: $color_white;
+                background-color: $color_cinder;
+            }
+        }
+    }
+    &.-add2 {
+        width: 100%;
+        background-color: $color_white;
+        border: 1px solid $color_pumpkin;
+        border-radius: 0;
+
+        [class^='icon-'] {
+            margin-right: 10px;
+            margin-left: 0;
+            color: $color_pumpkin;
+        }
+
+        &:hover {
+            @include respond-above(md) {
+                border-color: $color_pumpkin;
+            }
+        }
+    }
+
+    &.-cart {
+        width: 56px;
+        height: 56px;
+        padding: 0;
+        color: $color_white;
+        background-color: $color_pumpkin;
+        border-color: $color_pumpkin;
+
+        &:hover {
+            @include respond-above(md) {
+                background-color: $color_pumpkin-dark;
+                border-color: $color_pumpkin-dark;
+            }
+        }
+        &.-disabled {
+            pointer-events: all;
+            background-color: rgba($color_pumpkin, 0.2);
+            border-color: transparent;
+        }
+        .c-quantity {
+            @include typo_aeonik_11-12;
+            position: absolute;
+            top: 0;
+            right: 0;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 18px;
+            min-height: 18px;
+            color: $color_white;
+            background-color: $color_cinder;
+            border: 2px solid $color_white;
+            border-radius: 50px;
+
+            &.-empty {
+                display: none;
+            }
+        }
+    }
+
+    &.-cookies {
+        padding: 20px 50px;
+    }
+}
+
+/******************************************************/
+
+.c-link {
+    @include typo_aeonik_14-20;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 4px;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: color 100ms ease-in;
+
+    &::after {
+        position: absolute;
+        bottom: 4px;
+        left: 0;
+        display: block;
+        width: 100%;
+        height: 1px;
+        content: '';
+        transition: background-color 100ms ease-in;
+    }
+    &.-primary {
+        color: $color_pumpkin;
+
+        &:hover {
+            @include respond-above(md) {
+                color: $color_pumpkin-dark;
+
+                &::after {
+                    background-color: $color_pumpkin-dark;
+                }
+            }
+        }
+        &::after {
+            background-color: $color_pumpkin;
+        }
+    }
+    &.-secondary {
+        color: $color_cinder;
+
+        &:hover {
+            @include respond-above(md) {
+                color: $color_black-2;
+
+                &::after {
+                    background-color: $color_black-2;
+                }
+            }
+        }
+        &::after {
+            background-color: $color_cinder;
+        }
+    }
+    &.-disabled {
+        pointer-events: none;
+        opacity: 0.3;
+    }
+}

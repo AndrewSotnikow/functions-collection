@@ -1,0 +1,94 @@
+/* ==========================================================================
+	Input
+	========================================================================== */
+
+@use '../../../../css/base' as *;
+
+/********************************************************/
+
+.f-group {
+    &_bottom {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 8px;
+
+        .c-link {
+            margin-left: auto;
+        }
+    }
+    &.-checkbox {
+        label {
+            @include typo_aeonik_14-16;
+            position: relative;
+            display: inline-block;
+            display: flex;
+            align-items: center;
+            height: 24px;
+            padding-left: 30px;
+            cursor: pointer;
+            user-select: none;
+
+            &::before,
+            &::after {
+                position: absolute;
+                top: calc(50% - 12px);
+                left: 0;
+                display: inline-block;
+                width: 24px;
+                height: 24px;
+                content: '';
+                background-repeat: no-repeat;
+                background-position: 50%;
+            }
+            &::before {
+                background-color: $color-white;
+                border: 1px solid $color_input;
+            }
+
+            &.-cinder {
+                &::before {
+                    border: 1px solid $color_cinder;
+                }
+            }
+        }
+        &.-disabled {
+            label {
+                &::before,
+                &::after {
+                    background-image: url('#{$assets}/images/icons/x-fat.svg');
+                }
+            }
+            input {
+                &:checked + label {
+                    &::after {
+                        background-color: $color_light_beige;
+                        border-color: $color_light_beige;
+                    }
+                }
+            }
+        }
+        input {
+            display: none;
+
+            &:checked + label {
+                &::after {
+                    background-color: $color-pumpkin;
+                    background-image: url('#{$assets}/images/icons/check-mark-white-fat.svg');
+                    border: 1px solid $color_pumpkin;
+                }
+            }
+        }
+    }
+
+    &.-isInvalid {
+        .f-group_inner {
+            border: 1px solid $color_error_info;
+        }
+
+        .f-group_error {
+            @include typo_aeonik_12-14;
+            display: inline-block;
+            color: $color_error_info;
+        }
+    }
+}

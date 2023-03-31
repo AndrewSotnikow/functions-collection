@@ -1,0 +1,93 @@
+/* ==========================================================================
+	Step Container
+	========================================================================== */
+
+@use '../../../../css/base/' as *;
+
+/*========================================================================== */
+
+.c-stepContainer {
+    box-sizing: border-box;
+    max-width: 778px;
+    padding: 32px;
+    background-color: $color_white;
+    border: 1px solid $color_stroke;
+
+    @include respond-below(md) {
+        padding: 24px 16px;
+    }
+
+    &_title {
+        &.-border {
+            border-bottom: 1px solid $color_stroke;
+        }
+    }
+
+    &_itemsNumber {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        margin-right: 16px;
+        background-color: $color_cinder;
+        border-radius: 50%;
+    }
+
+    &_signIn {
+        box-sizing: border-box;
+        height: 24px;
+
+        @include respond-below(md) {
+            height: 100%;
+            height: fit-content;
+            max-height: 72px;
+            padding: 24px 0;
+            background-color: $color_grey;
+            border: 1px solid $color_stroke;
+        }
+
+        & span:first-child {
+            margin-right: 11px;
+        }
+        & a {
+            margin-top: 3px;
+            margin-left: 5px;
+
+            @include respond-below(md) {
+                margin-top: 4px;
+            }
+        }
+        &.-logged {
+            max-height: 20px;
+            padding: 0;
+            background-color: transparent;
+            border: 0;
+            border-bottom: 1px solid $color_cinder;
+        }
+    }
+    &_button {
+        min-width: 200px;
+
+        @include respond-below(md) {
+            width: 100%;
+        }
+
+        &.-pay {
+            img {
+                margin-left: 8px;
+            }
+
+            &.-disabled {
+                color: $color_disabled;
+            }
+        }
+    }
+
+    .c-confirmationToast {
+        position: fixed;
+        top: 121px;
+        right: 16px;
+        z-index: 100;
+    }
+}

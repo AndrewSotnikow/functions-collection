@@ -1,0 +1,84 @@
+/* ==========================================================================
+	Modal
+	========================================================================== */
+
+@use '../../../../css/base' as *;
+
+/*========================================================================== */
+
+.c-modal {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    min-height: 100vh;
+    min-height: calc(var(--vh, 1vh) * 100);
+    overflow-x: hidden;
+    overflow-y: scroll;
+    background-color: rgba($color_cinder, 0.8);
+    transition: min-height 100ms linear;
+    backdrop-filter: blur(2px);
+    height: -webkit-fill-available;
+
+    &.-creator {
+        display: flex;
+        opacity: 1;
+
+        .c-closeButton.-login {
+            display: none;
+        }
+    }
+
+    &_content {
+        position: relative;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        max-width: calc(100% - 208px);
+        margin: auto;
+        transition: min-height 100ms linear;
+
+        @include respond-below(md) {
+            max-width: calc(100% - 32px);
+            min-height: 100vh;
+            min-height: calc(var(--vh, 1vh) * 100);
+            min-height: -webkit-fill-available;
+            height: -webkit-fill-available;
+        }
+    }
+
+    .c-closeButton {
+        z-index: 999;
+        margin-bottom: 16px;
+        color: $color_white;
+    }
+}
+
+.c-checkoutModal {
+    .c-modal {
+        &_content {
+            width: fit-content;
+        }
+    }
+}
+
+.c-expiredRefresTokenModal {
+    padding: 32px 40px 40px;
+    max-width: 580px;
+    background-color: $color_white;
+
+    @include respond-below(sm) {
+        padding: 16px 20px 20px;
+    }
+
+    &_hr {
+        border-width: 1px;
+        border-color: $color_grey-4;
+        border-style: solid;
+    }
+}

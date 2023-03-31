@@ -1,0 +1,87 @@
+@use '../../../../css/base/' as *;
+@use '../Button/Button.scss' as *;
+@use '../../../../css/main/modal' as *;
+@use '../Input/Input' as *;
+
+.c-logIn {
+    width: 980px;
+    min-height: 645px;
+
+    @include respond-below(md) {
+        min-width: 343px;
+        max-width: 410px;
+        min-height: 483px;
+    }
+
+    @include respond-below(sm) {
+        width: 100%;
+        min-width: 343px;
+    }
+
+    &_header {
+        @include respond-below(md) {
+            text-align: center;
+        }
+    }
+
+    &_content {
+        width: 50%;
+        padding: 51px 73px 72px 48px;
+
+        @include respond-below(md) {
+            width: 100%;
+            padding: 0 16px 56px;
+        }
+    }
+    &_image {
+        width: 50%;
+        height: 100%;
+        padding: 8px;
+
+        & img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+    .c-form {
+        width: 100%;
+
+        &_group {
+            width: 100%;
+        }
+
+        &_field {
+            &:focus-within {
+                border: 1px solid $color_limestone_grey;
+            }
+            &.-tel {
+                padding: 15px 24px;
+            }
+        }
+    }
+
+    &_content.-loginPopup {
+        position: relative;
+
+        @include respond-below(md) {
+            height: 483px;
+        }
+
+        .c-form {
+            .c-loginSubmitBtnWrapper {
+                position: absolute;
+                bottom: 72px;
+                width: 369px;
+
+                @include respond-below(md) {
+                    bottom: 26px;
+                }
+
+                @include respond-below(sm) {
+                    width: 311px;
+                }
+            }
+        }
+    }
+}

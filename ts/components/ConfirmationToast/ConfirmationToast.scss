@@ -1,0 +1,56 @@
+@use '../../../../css/base/' as *;
+
+.c-confirmationToast {
+    &_inner {
+        position: relative;
+        width: 323px;
+        height: 133px;
+        background-color: $color_pearl_bush;
+        padding: 16px 24px 24px;
+        border-radius: 8px;
+    }
+
+    &::before {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translate(-50%, 3px);
+        content: '';
+        width: calc(100% - 8px);
+        height: 37px;
+        background-color: #eee1cd;
+        border-radius: 8px;
+        z-index: -1;
+    }
+
+    &_icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: $color_pearl_bush-light;
+        display: grid;
+        place-items: center;
+    }
+
+    &_button {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 24px;
+        height: 24px;
+        background-color: $color_white;
+        margin: 8px 8px 0 0;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+
+        .icon-x {
+            font-weight: bold;
+        }
+    }
+
+    &_text {
+        line-height: 20px !important;
+        white-space: pre-line;
+    }
+}

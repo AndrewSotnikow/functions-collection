@@ -1,0 +1,30 @@
+/* ==========================================================================
+	CloseButton
+	========================================================================== */
+
+@use '../../../../css/base' as *;
+
+/*========================================================================== */
+
+.c-closeButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    cursor: pointer;
+    background-color: rgba($color_white, 0.2);
+    border-radius: 50%;
+    transition: background-color 0.25s;
+
+    @include respond-below(md) {
+        width: 40px;
+        height: 40px;
+    }
+
+    &:hover {
+        @include respond-above(md) {
+            background-color: rgba($color_white, 0.3);
+        }
+    }
+}

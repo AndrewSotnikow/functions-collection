@@ -1,0 +1,102 @@
+/* ==========================================================================
+	CheckboxGroup
+	========================================================================== */
+
+@use '../../../../css/base' as *;
+
+/*========================================================================== */
+
+.c-checkboxGroup {
+    &_count {
+        @include typo_aeonik_14-16;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        margin-right: 24px;
+        font-weight: bold;
+        background: $color_pearl_bush;
+        border-radius: 50%;
+        opacity: 0;
+        transition: opacity 200ms ease-in;
+    }
+
+    &_title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 24px;
+        cursor: pointer;
+        user-select: none;
+        background: $color_pearl_bush;
+        border: 1px solid $color_stroke;
+        transition: background-color 200ms ease-in, color 200ms ease-in;
+
+        .t-title {
+            flex-grow: 1;
+        }
+
+        span {
+            transition: transform 200ms ease-in;
+            transform: rotate(180deg);
+        }
+    }
+
+    &_content {
+        max-height: 216px;
+        padding: 0 16px;
+        overflow: hidden;
+        border: 1px solid $color_stroke;
+        transition: max-height 200ms ease-in, border-color 200ms ease-in,
+            margin 200ms ease-in;
+        margin-top: 4px;
+    }
+
+    &_inner {
+        max-height: 184px;
+        padding-right: 24px;
+        margin-top: 16px;
+        margin-bottom: 16px;
+        overflow: auto;
+    }
+
+    &.-collapsed {
+        .c-checkboxGroup {
+            &_title {
+                background: $color_white;
+
+                span {
+                    transform: rotate(0deg);
+                }
+            }
+            &_content {
+                max-height: 0;
+                border-color: transparent;
+                margin: 0;
+            }
+            &_count {
+                opacity: 1;
+            }
+        }
+    }
+
+    .c-checkboxOption {
+        position: relative;
+
+        .f-group {
+            width: 100%;
+
+            label {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                span {
+                    padding-left: 16px;
+                    border-left: 1px solid $color_stroke;
+                }
+            }
+        }
+    }
+}
