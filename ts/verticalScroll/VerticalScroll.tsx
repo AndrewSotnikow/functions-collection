@@ -1,173 +1,171 @@
-import { Box } from "@mui/material"
-import * as React from "react"
-import { useEffect, useRef, useState } from "react"
-import { ReactComponent as ArrowLeft } from "./paginationArrowLeft.svg"
-import { ReactComponent as ArrowRight } from "./paginationArrowRight.svg"
-import verticalScroll from "./verticalScrolling"
-
+import { Box, Typography, useTheme } from '@mui/material'
+import * as React from 'react'
+import { useEffect, useState } from 'react'
+import { ExtendedEpgElement } from 'types/epg/Epg'
+import ChannelGuideView from '../ChannelGuideView'
+import debounce from 'utils/helpers/debounce'
+import useSearchByChannelName from 'hooks/useSearchByChannelName'
+import { useTranslation } from 'react-i18next'
+import useResizeHook from 'hooks/useResizeHook'
+import PaginationArrows from 'components/shared/PaginationArrows'
 interface VerticalScrollProps {
-  children: React.ReactNode
-  setStartIndex: React.Dispatch<React.SetStateAction<number>>
-  setEndIndex: React.Dispatch<React.SetStateAction<number>>
-  startIndex: number
+    data: ExtendedEpgElement[]
 }
 
-const VerticalScroll: React.FC<VerticalScrollProps> = ({
-  children,
-  setStartIndex,
-  setEndIndex,
-  startIndex,
-}) => {
-  const [scrollValue, setScrollValue] = useState(0)
-  const [channelWidth, setChannelWidth] = useState(0)
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth)
+const VerticalScroll = ({ data }: VerticalScrollProps) => {
+    const [addElementsAmount, setAddElementsAmount] = useState(3)
+    const [startIndex, setStartIndex] = useState(0)
+    const [endIndex, setEndIndex] = useState(addElementsAmount)
+    const [initialX, setInitialX] = useState<number | null>(null)
 
-  const epgContainerRef = useRef<HTMLDivElement>(null)
-  const epgElement = epgContainerRef.current
-
-  const onClickHandlerLeft = () => {
-    if (epgElement) {
-      const scrollLeft = epgElement.scrollLeft - channelWidth
-      setScrollValue(scrollLeft)
-      epgElement.scrollTo({
-        left: scrollLeft,
-        behavior: "smooth",
-      })
-    }
-  }
-
-  const onClickHandlerRight = () => {
-    if (epgElement) {
-      const scrollLeft = epgElement.scrollLeft + channelWidth
-      setScrollValue(scrollLeft)
-      epgElement.scrollTo({
-        left: scrollLeft,
-        behavior: "smooth",
-      })
-    }
-  }
-
-  useEffect(() => {
-    if (epgElement) {
-      epgElement.scrollLeft = scrollValue
-    }
-  }, [scrollValue, epgElement])
-
-  useEffect(() => {
-    if (epgElement) {
-      setChannelWidth(epgElement?.offsetWidth / 3)
-    }
-  }, [windowWidth, epgElement])
-
-  const addElementsAmount = 2
-  const [epgContainer, setEpgContainer] = useState<
-    HTMLElement | null | undefined
-  >()
-
-  let previousScrollLeft = 0
-
-  const updateViewIfNeed = (): void => {
-    if (epgElement) {
-      const width = epgElement.clientWidth
-      const { scrollWidth } = epgElement
-      const offset = 50
-      const currentScrollLeft = epgElement.scrollLeft
-      const userHistsRight = scrollWidth - currentScrollLeft - width <= offset
-
-      if (currentScrollLeft > previousScrollLeft) {
-        // user hit right
-        if (userHistsRight) {
-          setEndIndex((prev) => prev + addElementsAmount)
-          setStartIndex((prev) => prev + addElementsAmount)
-        }
-      }
-
-      if (currentScrollLeft < previousScrollLeft) {
-        // user hit left
-        if (currentScrollLeft === 0 && startIndex != 0) {
-          setEndIndex((prev) => prev - addElementsAmount)
-          setStartIndex((prev) => prev - addElementsAmount)
-        }
-      }
-
-      previousScrollLeft = currentScrollLeft
-    }
-  }
-
-  useEffect(() => {
+    const { width, ref: epgContainerRef } = useResizeHook<HTMLDivElement>()
     const epgElement = epgContainerRef.current
+    const theme = useTheme()
 
-    setEpgContainer(epgElement)
-    verticalScroll(epgContainer)
+    const { filteredArray } = useSearchByChannelName(
+        typeof data,
+        data,
+        'channelName'
+    )
+    const { t } = useTranslation()
 
-    if (epgElement) {
-      const handleResize = () => {
-        setWindowWidth(window.innerWidth)
-      }
+    const slicedEpgData: ExtendedEpgElement[] = filteredArray.slice(
+        startIndex,
+        endIndex
+    )
 
-      window.addEventListener("resize", handleResize)
+    useEffect(() => {
+        if (width < 1100 && width !== 0) {
+            setAddElementsAmount(2)
+            setEndIndex(addElementsAmount)
+        } else {
+            setAddElementsAmount(3)
+            setEndIndex(addElementsAmount)
+        }
+    }, [width])
 
-      epgElement.addEventListener("scroll", updateViewIfNeed)
+    useEffect(() => {
+        setStartIndex(0)
+        setEndIndex(addElementsAmount)
+    }, [filteredArray])
 
-      return () => {
-        epgElement.removeEventListener("scroll", updateViewIfNeed)
-        window.removeEventListener("resize", handleResize)
-      }
+    const detectMouseDirection = (
+        initialX: number,
+        currentX: number
+    ): 'left' | 'right' | null => {
+        const threshold = 50
+
+        if (currentX - initialX > threshold) {
+            return 'right'
+        }
+
+        if (initialX - currentX > threshold) {
+            return 'left'
+        }
+
+        return null
     }
-  })
 
-  const containerStyle = {
-    position: "relative",
-    display: "flex",
-    overflow: "hidden",
-    "&::-webkit-scrollbar": {
-      display: "none",
-    },
-    flex: "none",
-    scrollSnapType: "x mandatory",
-    scrollBehavior: "smooth",
-    flexFlow: "row nowrap",
-    cursor: "grab",
-    justifyContent: "left",
-    marginTop: "20px",
-    userSelect: "none",
-    height: "100%",
-  }
+    useEffect(() => {
+        const handleMouseDown = (event: MouseEvent) => {
+            setInitialX(event.clientX)
+        }
 
-  const arrowButton = {
-    position: "absolute",
-    top: "56px",
-    backgroundColor: "secondary.main",
-    borderRadius: "50%",
-    zIndex: 99999,
-  }
+        const handleMouseUp = () => {
+            setInitialX(null)
+        }
 
-  const leftArrow = {
-    left: "32px",
-  }
-  const rightArrow = {
-    right: "32px",
-  }
+        const handleMouseMove = debounce((event: MouseEvent) => {
+            if (initialX !== null) {
+                const currentX = event.clientX
+                const direction = detectMouseDirection(initialX, currentX)
+                if (direction === 'left') handleRightDirection()
+                else if (direction === 'right') handleLeftDirection()
+            }
+        }, 100)
 
-  return (
-    <>
-      <Box
-        sx={{ ...arrowButton, ...leftArrow }}
-        onClick={() => onClickHandlerLeft()}
-      >
-        <ArrowLeft />
-      </Box>
-      <Box ref={epgContainerRef} sx={containerStyle} dir="ltr">
-        {children}
-      </Box>
-      <Box
-        sx={{ ...arrowButton, ...rightArrow }}
-        onClick={() => onClickHandlerRight()}
-      >
-        <ArrowRight />
-      </Box>
-    </>
-  )
+        document.addEventListener('mousedown', handleMouseDown)
+        document.addEventListener('mouseup', handleMouseUp)
+        document.addEventListener('mousemove', handleMouseMove)
+
+        return () => {
+            document.removeEventListener('mousedown', handleMouseDown)
+            document.removeEventListener('mouseup', handleMouseUp)
+            document.removeEventListener('mousemove', handleMouseMove)
+        }
+    }, [initialX])
+
+    const handleRightDirection = () => {
+        if (epgElement && endIndex < filteredArray.length) {
+            setEndIndex((prev) => prev + addElementsAmount)
+            setStartIndex((prev) => prev + addElementsAmount)
+        }
+        //loop
+        else {
+            setEndIndex(addElementsAmount)
+            setStartIndex(0)
+        }
+    }
+    const handleLeftDirection = () => {
+        if (epgElement && startIndex >= addElementsAmount) {
+            setEndIndex((prev) => prev - addElementsAmount)
+            setStartIndex((prev) => prev - addElementsAmount)
+        }
+        //loop
+        else {
+            setEndIndex(filteredArray.length)
+            setStartIndex(filteredArray.length - addElementsAmount)
+        }
+    }
+
+    const containerStyle = {
+        position: 'relative',
+        display: 'flex',
+        overflow: 'hidden',
+        '&::-webkit-scrollbar': {
+            display: 'none',
+        },
+        flex: 'none',
+        scrollSnapType: 'x mandatory',
+        scrollBehavior: 'smooth',
+        flexFlow: 'row nowrap',
+        cursor: 'grab',
+        justifyContent: 'left',
+        marginTop: '20px',
+        userSelect: 'none',
+        height: '100%',
+        borderLeft: `1px solid ${theme.palette.custom.darkGray}`,
+    }
+
+    const noResultsInfoStyle = {
+        marginTop: '50px',
+        textAlign: 'center',
+        maxWidth: { xs: '294px', lg: '440px' },
+    }
+
+    return (
+        <Box height="100%">
+            {slicedEpgData.length ? (
+                <PaginationArrows
+                    handleLeftDirection={handleLeftDirection}
+                    handleRightDirection={handleRightDirection}>
+                    <Box ref={epgContainerRef} sx={containerStyle} dir="ltr">
+                        {slicedEpgData.map(
+                            (channel: ExtendedEpgElement, key) => (
+                                <ChannelGuideView key={key} channel={channel} />
+                            )
+                        )}
+                    </Box>
+                </PaginationArrows>
+            ) : (
+                <Box width="100%" display="flex" justifyContent="center">
+                    <Typography sx={noResultsInfoStyle}>
+                        {t('lackOfSearchResults')}
+                    </Typography>
+                </Box>
+            )}
+        </Box>
+    )
 }
 
 export default VerticalScroll
