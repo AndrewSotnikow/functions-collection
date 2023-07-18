@@ -1,28 +1,37 @@
 import { useEffect, useRef, useState } from 'react'
 
 const useResizeHook = <T extends HTMLElement>() => {
-    const [width, setWidth] = useState(0)
-    const ref = useRef<T>(null)
+  const [containerWidth, setContainerWidth] = useState(0)
+  const [containerHeight, setContainerHeight] = useState(0)
+  const [bodyWidth, setBodyWidth] = useState(0)
+  const [bodyHeight, setBodyHeight] = useState(0)
+  const ref = useRef<T>(null)
 
-    const setWidthHandler = () => {
-        if (ref.current) {
-            const width = ref.current.clientWidth
-            setWidth(width)
-        }
+  const setSizeHandler = () => {
+    if (ref.current) {
+      const containerWidth = ref.current.clientWidth
+      const containerHeight = ref.current.clientHeight
+      const bodyHeight = document.body.clientHeight
+      const bodyWidth = document.body.clientWidth
+      setBodyHeight(bodyHeight)
+      setBodyWidth(bodyWidth)
+      setContainerWidth(containerWidth)
+      setContainerHeight(containerHeight)
     }
-    useEffect(() => {
-        setWidthHandler()
-    }, [])
+  }
+  useEffect(() => {
+    setSizeHandler()
+  }, [])
 
-    useEffect(() => {
-        window.addEventListener('resize', setWidthHandler)
+  useEffect(() => {
+    window.addEventListener('resize', setSizeHandler)
 
-        return () => {
-            window.removeEventListener('resize', setWidthHandler)
-        }
-    }, [])
+    return () => {
+      window.removeEventListener('resize', setSizeHandler)
+    }
+  }, [])
 
-    return { width, ref }
+  return { containerWidth, containerHeight, bodyWidth, bodyHeight, ref }
 }
 
 export default useResizeHook
